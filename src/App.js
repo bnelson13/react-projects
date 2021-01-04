@@ -1,19 +1,29 @@
 import React, { Component } from 'react';
 import './App.css';
 
-import UserInput from './UserInput/UserInput';
-import UserOutput from './UserOutput/UserOutput';
+import ValidationComponent from './ValidationComponent/ValidationComponent';
+import CharComponent from './CharComponent/CharComponent';
 
 class App extends Component {
   state = {
-    username: 'supermax',
+    userInput: '',
   };
 
-  usernameChangedHandler = (event) => {
-    this.setState({ username: event.target.value });
+  inputLengthHandler = (e) => {
+    this.setState({ userInput: e.target.value });
+  };
+
+  deleteCharHandler = (index) => {
+    const chars = this.state.userInput.split('');
+    chars.splice(index, 1);
+    const updatedChars = chars.join('');
+    this.setState({ userInput: updatedChars });
   };
 
   render() {
+    let inputChars = this.state.userInput.split('').map((char, index) => {
+      return <CharComponent inputChar={char} key={index} click={() => this.deleteCharHandler(index)} />;
+    });
     return (
       <div className="App">
         <ol>
@@ -27,7 +37,7 @@ class App extends Component {
             length (e.g. take 5 as a minimum length)
           </li>
           <li>
-            Create another component ({`=>`} CharComponent) and style it as an inline box (=> display: inline-block,
+            Create another component ({`=>`} CharComponent) and style it as an inline box ({`=>`} display: inline-block,
             padding: 16px, text-align: center, margin: 16px, border: 1px solid black).
           </li>
           <li>
@@ -36,6 +46,11 @@ class App extends Component {
           </li>
           <li>When you click a CharComponent, it should be removed from the entered text.</li>
         </ol>
+        <hr />
+        <input type="text" onChange={this.inputLengthHandler} value={this.state.userInput} />
+        <p>{this.state.userInput.length}</p>
+        <ValidationComponent userInput={this.state.userInput.length} />
+        {inputChars}
       </div>
     );
   }
