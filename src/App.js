@@ -3,52 +3,40 @@ import './App.css';
 
 import UserInput from './UserInput/UserInput';
 import UserOutput from './UserOutput/UserOutput';
-import InputValidation from './InputValidation/InputValidation';
-import CharComponent from './CharComponent/CharComponent';
 
 class App extends Component {
   state = {
-    users: [{ user: 'Brad' }, { user: 'Mary' }],
-    length: 4,
+    username: 'supermax',
   };
 
-  changedUserNameEventHandler = (e) => {
-    this.setState({
-      users: [{ user: e.target.value }, { user: 'Mary' }],
-      length: e.target.value.length,
-    });
-  };
-
-  deleteCharHandler = (charIndex) => {
-    const chars = this.state.users[0].user.split('');
-    chars.splice(charIndex, 1);
-    console.log(chars);
-    this.setState({ users: [{ user: chars }, { user: 'Mary' }] });
-    // this.setState({ users: [{ user: chars }, { user: 'Mary' }] });
+  usernameChangedHandler = (event) => {
+    this.setState({ username: event.target.value });
   };
 
   render() {
-    let chars = (
-      <div>
-        {this.state.users[0].user.split('').map((c, charIndex) => {
-          return (
-            <CharComponent key={`char${charIndex}`} click={() => this.deleteCharHandler(charIndex)} character={c} />
-          );
-        })}
-      </div>
-    );
     return (
       <div className="App">
-        <UserInput
-          changed={this.changedUserNameEventHandler}
-          name={this.state.users[0].user}
-          inputLength={this.state.length}
-        />
-        <InputValidation length={this.state.length} />
-        {chars}
-        <UserOutput name={this.state.users[0].user} />
-        <UserOutput name={this.state.users[0].user} />
-        <UserOutput name={this.state.users[1].user} />
+        <ol>
+          <li>Create TWO new components: UserInput and UserOutput</li>
+          <li>UserInput should hold an input element, UserOutput two paragraphs</li>
+          <li>Output multiple UserOutput components in the App component (any paragraph texts of your choice)</li>
+          <li>Pass a username (of your choice) to UserOutput via props and display it there</li>
+          <li>Add state to the App component (the username) and pass the username to the UserOutput component</li>
+          <li>Add a method to manipulate the state (an event-handler method)</li>
+          <li>
+            Pass the event-handler method reference to the UserInput component and bind it to the input-change event
+          </li>
+          <li>Ensure that the new input entered by the user overwrites the old username passed to UserOutput</li>
+          <li>Add two-way-binding to your input (in UserInput) to also display the starting username</li>
+          <li>
+            Add styling of your choice to your components/ elements in the components - both with inline styles and
+            stylesheets
+          </li>
+        </ol>
+        <UserInput changed={this.usernameChangedHandler} currentName={this.state.username} />
+        <UserOutput userName={this.state.username} />
+        <UserOutput userName={this.state.username} />
+        <UserOutput userName="Max" />
       </div>
     );
   }
